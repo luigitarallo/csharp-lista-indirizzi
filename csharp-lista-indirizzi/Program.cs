@@ -9,8 +9,8 @@ namespace csharp_lista_indirizzi
         {
             string path = "C:\\file-esercizi-NET\\addresses.csv";
             string path2 = "C:\\file-esercizi-NET\\new-file.csv";
-            var addresses = ReadCSV(path);
-            foreach (var address in addresses)
+            List<Address> addresses = ReadCSV(path);
+            foreach (Address address in addresses)
             {
                 Console.WriteLine(address.ToString());
             }
@@ -21,18 +21,18 @@ namespace csharp_lista_indirizzi
         {
             List<Address> addresses = new List<Address>();
 
-            var stream = File.OpenText(path);
+            StreamReader stream = File.OpenText(path);
             int i = 0;
             while(stream.EndOfStream == false)
             {
-                var line = stream.ReadLine();
+                string line = stream.ReadLine();
                 i++;
                 if (i <= 1)
                     continue;
                 try
                 {
-                    var dati = line.Split(',');
-                    foreach (var field in dati)
+                    string[] dati = line.Split(',');
+                    foreach (string field in dati)
                     {
                         if (string.IsNullOrEmpty(field))
                         {
@@ -73,7 +73,7 @@ namespace csharp_lista_indirizzi
         public static void WriteAddressesInNewCSV(List<Address> addresses, string path )
         {
             using StreamWriter stream = File.CreateText(path);
-            foreach(var address in addresses)
+            foreach(Address address in addresses)
             {
                 stream.WriteLine(address.ToString());
             }
