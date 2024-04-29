@@ -32,6 +32,13 @@ namespace csharp_lista_indirizzi
                 try
                 {
                     var dati = line.Split(',');
+                    foreach (var field in dati)
+                    {
+                        if (string.IsNullOrEmpty(field))
+                        {
+                            throw new Exception($"Error in CSV file at line {i}: One or more field are empty.");
+                        }
+                    }
                     string name = dati[0];
                     string surname = dati[1];
                     string street = dati[2];
@@ -45,22 +52,24 @@ namespace csharp_lista_indirizzi
                 }
                 catch (FormatException e)
                 {
-                    Console.WriteLine($"Errore nella riga {i} del file CSV: Il codice postale non è un numero valido. {e.Message}");
+                    Console.WriteLine($"Error in CSV file at line {i}: The Postal Code is not a valid number. {e.Message}");
                 }
                 catch (IndexOutOfRangeException e)
                 {
-                    Console.WriteLine($"Errore nella riga {i} del file CSV: L'indice non è valido. {e.Message}");
+                    Console.WriteLine($"Error in CSV file at line {i}: The index is not valid. {e.Message}");
                 }
                 catch(Exception e)
                 { 
-                    Console.WriteLine($"Errore nella riga {i} del file CSV. {e.Message}");
+                    Console.WriteLine($"Error in CSV file at line {i}. {e.Message}");
                 }
-               
             }
             stream.Dispose();
             return addresses;
         }
 
+        /*------------------------------------------
+         BONUS: scrittura dei dati su un altro file
+        -------------------------------------------*/
         public static void WriteAddressesInNewCSV(List<Address> addresses, string path )
         {
             using StreamWriter stream = File.CreateText(path);
